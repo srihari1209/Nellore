@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+	<head>
+		<title>SPSR RECRUITMENT DRIVE</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename= 'css/main.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename= 'css/noscript.css') }}">
+		<script src="https://www.google.com/recaptcha/api.js"></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="index.html">SPSR RECRUITMENT DRIVE</a></h1>
+						<nav>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<div class="inner">
+							<h2>Menu</h2>
+							<ul class="links">
+								<li><a href="index.html">Home</a></li>
+								<li><a href="generic.html">Generic</a></li>
+								<li><a href="elements.html">Elements</a></li>
+								<li><a href="#">Log In</a></li>
+								<li><a href="#">Sign Up</a></li>
+							</ul>
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+						<header>
+							<div class="inner">
+								<h2>Differently Abled Special Recruitment Drive 2021-22 SPSR Nellore Dist</h2>
+								<p>Please click on this link for the SPSR Nellore Dist Recruitment Drive 2021-22 notification.</p>
+							</div>
+						</header>
+					</section>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="inner">
+							<h2 class="major">Application Form</h2>
+							<!--<p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p> -->
+							<form action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
+								<div class="fields">
+									<div class="field">
+										<label for="appliedPost">Applying for the Post of</label>
+										<select name="JobAppliedFor" id="appliedPost" required>
+											<option value="Junior Assistant">Junior Assistant</option>
+											<option value="Typist">Typist</option>
+											<option value="Multi Purpose Health Assistant(F)">Multi Purpose Health Assistant(F)</option>
+											<option value="Dark Room Assistant">Dark Room Assistant</option>
+											<option value="Technical Assistant of O/o. the Superintending Engineer, Panchayat Raj Dept.">Technical Assistant of O/o. the Superintending Engineer, Panchayat Raj Dept.</option>
+											<option value="Technical Assistant of & Irrigation Circle, Nellore">Technical Assistant of & Irrigation Circle, Nellore</option>
+											<option value="Office Subordinate">Office Subordinate</option>
+											<option value="P.H Worker">P.H Worker</option>
+											<option value="Watchman/ Day Watcher">Watchman/ Day Watcher</option>
+											<option value="Fountain Cleaners">Fountain Cleaners</option>
+											<option value="Gardeners">Gardeners</option>
+											<option value="Watch Men">Watch Men</option>
+											<option value="Watch Men">Avenue Coolis</option>
+											<option value="Watch Men">P.H. Workers</option>
+										</select>
+									</div>
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" required/>
+									</div>
+									<div class="field">
+										<label for="gender">Gender</label>
+										<select name="gender" id="gender" required>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+										</select>
+									</div>
+									<div class="field">
+										<label for="fatherName">Father/ Husband Name</label>
+										<input type="text" name="fatherName" id="fatherName" required/>
+									</div>
+									<div class="field">
+										<label for="DOB">Date of Birth</label>
+										<input type="date" id="DOB" name="DOB" required/>
+										<style>
+											input[type="date"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+											input[type="date"]::-webkit-calendar-picker-indicator {
+  												filter: invert(100%);
+											}
+										</style>
+									</div>
+									<div class="field">
+										<label for="birthPlace">Place for Birth</label>
+										<input type="text" name="placeOfBirth" id="birthPlace" required/>
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="email" name="email" id="email" placeholder="Enter your email" required/>
+									</div>
+									<div class="field">
+										<label for="message1">Permanent Address</label>
+										<textarea name="message1" id="message1" rows="3" required></textarea>
+									</div>
+									<div class="field">
+										<label for="message2">Temporary Address</label>
+										<textarea name="message2" id="message2" rows="3" required></textarea>
+									</div>
+									<div class="field">
+										<label for="phone">Phone Number</label>
+										<input type="tel" id="phone" name="phone" placeholder="10 Digit Number" pattern="[0-9]{10}" required/>
+									</div>
+									<div class="field">
+										<label for="caste">Caste</label>
+										<input type="text" id="caste" name="caste" required/>
+									</div>
+									<div class="field">
+										<label for="casteCert">Upload caste certificate</label>
+										<input type="file" id="casteCert" name="casteCert" accept="image/png, image/jpeg,application/pdf"/>
+									</div>
+									<div class="field">
+										<label for="profilePic">Upload Profile pic</label>
+										<input type="file" id="profilePic" name="profilePic" accept="image/png, image/jpeg,application/pdf"/>
+									</div>
+									<div class="field">
+        									<label>Type of Deformity</label>
+        									<input type="checkbox" name="deformity" value="Visually Impaired" id="VisuallyImpaired" />
+											<label for="VisuallyImpaired">Visually Impaired</label>
+        									<input type="checkbox" name="deformity" value="Hearing Impaired" id="HearingImpaired"/>
+											<label for="HearingImpaired">Hearing Impaired</label>
+        									<input type="checkbox" name="deformity" value="Orthopedically Handicapped" id="orthopedicallyHandicapped" />
+											<label for="orthopedicallyHandicapped">Orthopedically Handicapped</label>
+											<input type="checkbox" name="deformity" value="Mental Illness" id="MentalIllness" />
+											<label for="MentalIllness">Mental Illness</label>
+									</div>
+									<div class="field">
+										<label for="DisabilityPer">Disability Percentage</label>
+										<input type="number" id="DisabilityPer" name="DisabilityPer" min="1" max="100">
+										<style>
+											input[type="number"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+										</style>
+									</div>
+									<div class="field">
+										<label for="motherTongue">Mother Tongue</label>
+										<input type="text" id="motherTongue" name="Mother_Tongue" required/>
+									</div>
+									<div class="field">
+										<label>Educational Qualifications</label>
+										<label for="general_qualification">a)  General Qualification</label>
+										<input type="text" id="general_qualification" name="general_qualification" required/><br/>
+										<label for="technical_qualification">b)  Technical Qualification</label>
+										<input type="text" id="technical_qualification" name="technical_qualification" required/>
+									</div>
+									<div class="field">
+										<label>Highest Educational details</label>
+										<label for="Address_1">Complete address of the Educational institution, Village/Mandal/District</label>
+										<input type="text" id="Address_1" name="Address_1" required/><br/>
+										<label for="Passed_class_1">Passed Class and Date of Examination</label>
+										<input type="text" id="Passed_class_1" name="Passed_class_1" required/><br/>
+										<label for="Percentage_1">Percentage</label>
+										<input type="number" id="Percentage_1" name="Percentage_1" min="1" max="100" required>
+										<style>
+											input[type="number"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+										</style>
+										<br>
+										<label for="uploadCert">Upload Certificate</label>
+										<input type="file" id="uploadCert" name="cert_1" accept="image/png, image/jpeg,application/pdf" required/>
+									</div>
+								</div>
+								<div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/>
+								<ul class="actions">
+									<li><input type="submit" value="Submit Application"/></li>
+								</ul>
+							</form>
+							<ul class="copyright">
+								<li>&copy; Hari Inc. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script type="text/javascript" src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+			<script type="text/javascript" src="{{url_for('static', filename='js/jquery.scrollex.min.js')}}"></script>
+			<script type="text/javascript" src="{{url_for('static', filename='js/browser.min.js')}}"></script>
+			<script type="text/javascript" src="{{url_for('static', filename='js/breakpoints.min.js')}}"></script>
+			<script type="text/javascript" src="{{url_for('static', filename='js/util.js')}}"></script>
+			<script type="text/javascript" src="{{url_for('static', filename='js/main.js')}}"></script>
+	</body>
+</html>
