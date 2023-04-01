@@ -7,6 +7,9 @@ import MySQLdb.cursors
 import re
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from pathlib import Path
+from flask_recaptcha import ReCaptcha
+import pandas
 
 app = Flask(__name__)
 # recaptcha = ReCaptcha(app=app)
@@ -39,81 +42,88 @@ mysql = MySQL(app)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == "POST":
-        print("Welcome")
+        Dict = {}
         appliedpost = request.form['JobAppliedFor']
         name = request.form['name']
         gender = request.form['gender']
         fathername = request.form['fatherName']
         DOB = request.form['DOB']
-        # datetime_object = datetime.strptime(DOB)
         datetime_object = datetime.fromisoformat(DOB)
         age = ((datetime.today() - datetime_object).days / 365)
-        print(age)
         birthplace = request.form['placeOfBirth']
         email = request.form['email']
         message1 = request.form['message1']
         message2 = request.form['message2']
         phone = request.form['phone']
-        print(phone)
         caste = request.form['caste']
-        # print(caste)
-        # casteCert = request.form['casteCert']
-        # profilePic = request.form['profilePic']
-        # VisuallyImpaired = request.form['VisuallyImpaired']
-        # HearingImpaired = request.form['HearingImpaired']
-        # OrthopedicallyHandicapped = request.form['OrthopedicallyHandicapped']
-        # MentalIllness = request.form['MentalIllness']
-        # print("welcome1")
         deformity = request.form.getlist('deformity')
-        # print(deformity)
+        deformity1 = ""
+        for ele in deformity:
+            deformity1 = deformity1 + ele + "|"
         DisabilityPer = request.form['DisabilityPer']
-        # print(DisabilityPer)
         motherTongue = request.form['Mother_Tongue']
-        # print(motherTongue)
         general_qualification = request.form['general_qualification']
-        # print(general_qualification)
         technical_qualification = request.form['technical_qualification']
-        # print(technical_qualification)
         Address_1 = request.form['Address_1']
-        print(Address_1)
         Passed_class_1 = request.form['Passed_class_1']
-        print(Passed_class_1)
         Percentage_1 = request.form['Percentage_1']
-        print(Percentage_1)
         uploadCert = request.files['cert_1']
         casteCert = request.files['casteCert']
         profilePic = request.files['profilePic']
         files = [uploadCert, casteCert, profilePic]
-        print(files)
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        folder = cursor.execute('select max(id) from spsr.applications;')
-        target = "static/uploads/{}".format(str(folder))
+        primary_key = 1
+        target = "static/uploads/{}".format(str(primary_key))
         path = []
+        # Create a Cloud Storage client.
+        gcs = storage.Client()
+        # Get the bucket that the file will be uploaded to.
+        bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 extension = str(filename.split("."))
                 extension = str(extension[1])
-                print(filename)
-                #source = app.config['UPLOAD_FOLDER'] + "/tmp" + filename
-                #destination = app.config['UPLOAD_FOLDER'] + "/" + name + datetime.datetime.now() + "." + extension
-                #file.save(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", filename))
-                #user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(folder + 1))
-                os.mkdir(target, exists_ok=True)
-                file.save(os.path.join(target, filename))
-                path.append(os.path.join(target, filename))
-                print("os.path.join(app.config['UPLOAD_FOLDER']", filename)
+                blob = bucket.blob(filename)
+                blob.upload_from_string(
+                     uploaded_file.read(), content_type=uploaded_file.content_type
+                    )
+                blob.make_public()
+                #Path(target).mkdir(parents=True, exist_ok=True)
+                #file.save(os.path.join(target, filename))
+                #path.append(os.path.join(target, filename))
+                path.append(blob.public_url)
         fields = (
-            appliedpost, name, gender, fathername, DOB, age, birthplace, message1, message2, email, caste,
+            appliedpost, name, gender, fathername, DOB, age, birthplace, message1, message2, email, phone, caste,
             path[0], path[1], deformity, DisabilityPer, motherTongue, general_qualification, technical_qualification,
             Address_1, Passed_class_1, Percentage_1, path[2])
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('"INSERT INTO spsr.applications values(%s,%s,%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%s,%s,%s,'
-                       '%s,%s,%d,%s)"',
-                       fields)
-        return render_template('home.html')
-        print("Welcome")
-    return render_template('generic.html', sitekey=app.config['RECAPTCHA_SITE_KEY'])
+        Dict["id"] = primary_key
+        Dict["appliedpost"] = appliedpost
+        Dict["name"] = name
+        Dict["gender"] = gender
+        Dict["fathername"] = fathername
+        Dict["DOB"] = DOB
+        Dict["age"] = age
+        Dict["birthplace"] = birthplace
+        Dict["perm_address"] = message1
+        Dict["temp_address"] = message2
+        Dict["email"] = email
+        Dict["phone"] = phone
+        Dict["caste"] = caste
+        Dict["caste_cert"] = path[0]
+        Dict["profile_pic"] = path[1]
+        Dict["deformity"] = deformity1
+        Dict["DisabilityPer"] = DisabilityPer
+        Dict["motherTongue"] = motherTongue
+        Dict["general_qualification"] = general_qualification
+        Dict["technical_qualification"] = technical_qualification
+        Dict["address_1"] = Address_1
+        Dict["passed_class"] = Passed_class_1
+        Dict["pass_percentage"] = Percentage_1
+        Dict["education_cert"] = path[2]
+        data = pandas.DataFrame(Dict, index=[0])
+        data.to_csv(os.path.join("static/uploads/", "master.csv"), index=False, header=True, mode="a")
+        return render_template('generic.html', error="Your application Saved Successfully")
+    return render_template('generic.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -122,12 +132,6 @@ def login():
     if request.method == 'POST' and 'name' in request.form and 'password' in request.form:
         username = request.form['name']
         password = request.form['password']
-        captcha_response = request.form['g-recaptcha-response']
-        if is_human(captcha_response):
-            status = "Detail submitted successfully."
-        else:
-            status = "Sorry ! Please Check Im not a robot."
-        flash(status)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE name = % s AND password = % s', (username, password,))
         account = cursor.fetchone()
@@ -159,14 +163,5 @@ def logout():
     return 'Logout'
 
 
-def is_human(captcha_response):
-    """ Validating recaptcha response from google server
-            Returns True captcha test passed for submitted form else returns False."""
-    payload = {'response': captcha_response, 'secret': app.config['RECAPTCHA_PRIVATE_KEY']}
-    response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
-    response_text = json.loads(response.text)
-    return response_text['success']
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8080)
+    app.run(host='0.0.0.0')

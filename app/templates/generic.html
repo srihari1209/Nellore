@@ -39,6 +39,9 @@
 					<section id="wrapper">
 						<header>
 							<div class="inner">
+								{% if error%}
+    									<H1><strong>{{error}}</strong></H1>
+								{% endif%}
 								<h2>Differently Abled Special Recruitment Drive 2023-24 SPSR Nellore Dist</h2>
 								<p>Please click on this link for the SPSR Nellore Dist Recruitment Drive 2023-24 notification.</p>
 							</div>
@@ -55,20 +58,12 @@
 									<div class="field">
 										<label for="appliedPost">Applying for the Post of</label>
 										<select name="JobAppliedFor" id="appliedPost" required>
-											<option value="Junior Assistant">Junior Assistant</option>
-											<option value="Typist">Typist</option>
-											<option value="Multi Purpose Health Assistant(F)">Multi Purpose Health Assistant(F)</option>
-											<option value="Dark Room Assistant">Dark Room Assistant</option>
-											<option value="Technical Assistant of O/o. the Superintending Engineer, Panchayat Raj Dept.">Technical Assistant of O/o. the Superintending Engineer, Panchayat Raj Dept.</option>
-											<option value="Technical Assistant of & Irrigation Circle, Nellore">Technical Assistant of & Irrigation Circle, Nellore</option>
-											<option value="Office Subordinate">Office Subordinate</option>
-											<option value="P.H Worker">P.H Worker</option>
-											<option value="Watchman/ Day Watcher">Watchman/ Day Watcher</option>
-											<option value="Fountain Cleaners">Fountain Cleaners</option>
-											<option value="Gardeners">Gardeners</option>
-											<option value="Watch Men">Watch Men</option>
-											<option value="Watch Men">Avenue Coolis</option>
-											<option value="Watch Men">P.H. Workers</option>
+											<option value="TYPIST">TYPIST</option>
+											<option value="LIBRARIAN GRADE-III">LIBRARIAN GRADE-III</option>
+											<option value="PH WORKER">P.H. Worker</option>
+											<option value="KAMATI">KAMATI</option>
+											<option value="COOK">COOK</option>
+											<option value="FITTER COOLIE">FITTER COOLIE</option>
 										</select>
 									</div>
 									<div class="field">
@@ -125,11 +120,11 @@
 									</div>
 									<div class="field">
 										<label for="casteCert">Upload caste certificate</label>
-										<input type="file" id="casteCert" name="casteCert" accept="image/png, image/jpeg,application/pdf"/>
+										<input type="file" id="casteCert" name="casteCert" accept="image/png,image/jpeg,application/pdf"/>
 									</div>
 									<div class="field">
 										<label for="profilePic">Upload Profile pic</label>
-										<input type="file" id="profilePic" name="profilePic" accept="image/png, image/jpeg,application/pdf"/>
+										<input type="file" id="profilePic" name="profilePic" accept="image/png,image/jpeg,application/pdf"/>
 									</div>
 									<div class="field">
         									<label>Type of Deformity</label>
@@ -182,7 +177,6 @@
 										<input type="file" id="uploadCert" name="cert_1" accept="image/png, image/jpeg,application/pdf" required/>
 									</div>
 								</div>
-								<div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/>
 								<ul class="actions">
 									<li><input type="submit" value="Submit Application"/></li>
 								</ul>
