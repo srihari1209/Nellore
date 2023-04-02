@@ -1,15 +1,19 @@
 import os
-
-from flask import Flask, render_template, request, flash, redirect, url_for, json, session, make_response
+import logging
+from typing import Union
+from flask import Flask, render_template, request, flash, redirect, url_for, json, session, make_response,Response,send_from_directory,send_file
 import requests
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 from werkzeug.utils import secure_filename
-from datetime import datetime
+import datetime
 from pathlib import Path
 from flask_recaptcha import ReCaptcha
 import pandas
+import random
+from google.cloud import storage
+import pdfkit
 
 app = Flask(__name__)
 # recaptcha = ReCaptcha(app=app)
@@ -20,11 +24,11 @@ app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'spsr'
 
 app.config['RECAPTCHA_ENABLED '] = True
-app.config['RECAPTCHA_SITE_KEY'] = '6LcSZ6QeAAAAAHdmSmKbAK1mnIJgUZ7xOqN1ZVB8'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcSZ6QeAAAAAF9iEGqQaV_q1-k8nSd8589BBQHu'
+app.config['RECAPTCHA_SITE_KEY'] = '6Ld5cUYlAAAAAKl9KXXfTdtcPehMmPl-154NMdZq'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6Ld5cUYlAAAAAEKYZTZwxJbiGD2yvgKxSq0qV2tF'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'black'}
 
-app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 app.config["UPLOAD_FOLDER"] = "static/assets/"
 
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
@@ -37,7 +41,7 @@ def allowed_file(filename):
 # recaptcha = ReCaptcha()
 # recaptcha.init_app(app)
 mysql = MySQL(app)
-
+recaptcha = ReCaptcha(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -48,8 +52,9 @@ def home():
         gender = request.form['gender']
         fathername = request.form['fatherName']
         DOB = request.form['DOB']
-        datetime_object = datetime.fromisoformat(DOB)
-        age = ((datetime.today() - datetime_object).days / 365)
+        #datetime_object = datetime.strptime(DOB,'yyyy-mm-dd')
+        datetime_object = datetime.datetime.strptime(DOB, "%Y-%m-%d").date()
+        age = int(((datetime.date.today() - datetime_object).days / 365))
         birthplace = request.form['placeOfBirth']
         email = request.form['email']
         message1 = request.form['message1']
@@ -71,21 +76,33 @@ def home():
         casteCert = request.files['casteCert']
         profilePic = request.files['profilePic']
         files = [uploadCert, casteCert, profilePic]
-        primary_key = 1
+        
+        emp_reg_no = request.form['emp_reg_no']
+        emp_reg_date = request.form['emp_reg_date']
+        obt_marks = request.form['obt_marks']
+        tot_marks = request.form['tot_marks']
+        year_passed = request.form['year_passed']
+        
+        df = pandas.read_csv("master.csv")
+        #count_1 = df.count()
+        primary_key = 1000 + len(df.index)
         target = "static/uploads/{}".format(str(primary_key))
         path = []
+        project_id = "nellore-342906"
         # Create a Cloud Storage client.
-        gcs = storage.Client()
+        gcs = storage.Client(project=project_id)
         # Get the bucket that the file will be uploaded to.
-        bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
+        bucket = gcs.get_bucket("nellore-flask")
+        num = random.randint(0, 9)
+        num = name + str(num) + "/"
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 extension = str(filename.split("."))
                 extension = str(extension[1])
-                blob = bucket.blob(filename)
+                blob = bucket.blob(num+filename)
                 blob.upload_from_string(
-                     uploaded_file.read(), content_type=uploaded_file.content_type
+                     file.read(), content_type=file.content_type
                     )
                 blob.make_public()
                 #Path(target).mkdir(parents=True, exist_ok=True)
@@ -109,8 +126,8 @@ def home():
         Dict["email"] = email
         Dict["phone"] = phone
         Dict["caste"] = caste
-        Dict["caste_cert"] = path[0]
-        Dict["profile_pic"] = path[1]
+        Dict["caste_cert"] = path[1]
+        Dict["profile_pic"] = path[2]
         Dict["deformity"] = deformity1
         Dict["DisabilityPer"] = DisabilityPer
         Dict["motherTongue"] = motherTongue
@@ -119,10 +136,18 @@ def home():
         Dict["address_1"] = Address_1
         Dict["passed_class"] = Passed_class_1
         Dict["pass_percentage"] = Percentage_1
-        Dict["education_cert"] = path[2]
+        Dict["education_cert"] = path[0]
+        
+        
+        Dict["emp_reg_no"] = emp_reg_no
+        Dict["emp_reg_date"] = emp_reg_date
+        Dict["obt_marks"] = obt_marks
+        Dict["tot_marks"] = tot_marks
+        Dict["year_passed"] = year_passed
         data = pandas.DataFrame(Dict, index=[0])
-        data.to_csv(os.path.join("static/uploads/", "master.csv"), index=False, header=True, mode="a")
-        return render_template('generic.html', error="Your application Saved Successfully")
+        bucket.blob('master.csv').upload_from_string(data.to_csv(index=False, header=True, mode="a"), 'text/csv')
+        data.to_csv("master.csv", index=True, header=False, mode="a")
+        return render_template('application.html', request=Dict)
     return render_template('generic.html')
 
 
@@ -142,7 +167,7 @@ def login():
             msg = 'Logged in successfully !'
         else:
             msg = 'Incorrect username / password !'
-        res = make_response(render_template('home.html', msg=msg))
+        res = make_response(render_template('admin.html', msg=msg))
         res.headers.add('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0')
         return res
     else:
@@ -150,18 +175,57 @@ def login():
     return render_template('login.html', sitekey=app.config['RECAPTCHA_SITE_KEY'], msg=msg)
 
 
-@app.route('/admin')
+@app.route('/admin',methods=['GET', 'POST'])
 def admin():
     return render_template('home.html')
 
 
-@app.route('/logout')
+@app.route('/logout',methods=['GET', 'POST'])
 def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('name', None)
-    return 'Logout'
+    return render_template('generic.html')
 
+
+@app.errorhandler(500)
+def server_error(e: Union[Exception, int]) -> str:
+    logging.exception("An error occurred during a request.")
+    return (
+        """
+    An internal error occurred: <pre>{}</pre>
+    See logs for full stacktrace.
+    """.format(
+            e
+        ),
+        500,
+    )
+
+
+@app.route('/download',methods=['GET', 'POST'])
+def download():
+    #config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+    #out = render_template("application.html")
+    # PDF options
+    #options = {
+    #    "orientation": "landscape",
+    #    "page-size": "A4",
+    #    "margin-top": "1.0cm",
+    #    "margin-right": "1.0cm",
+    #    "margin-bottom": "1.0cm",
+    #    "margin-left": "1.0cm",
+    #    "encoding": "UTF-8",
+    #}
+    # Build PDF from HTML
+    #pdf = pdfkit.from_string(out, "out.pdf", options=options,configuration=config)
+    # Download the PDF
+    #return send_from_directory(filename="masters.csv")
+    #return Response(pdf, mimetype="application/pdf")
+    return send_file("master.csv")
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    return 'File Too Large', 413
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

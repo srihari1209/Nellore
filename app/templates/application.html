@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+  	<title>Application Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css')}}">
+
+	</head>
+	<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">Application Form</h2>
+				</div>
+			</div>
+			{% if request %}
+			<div class="row justify-content-center">
+				<div class="col-md-12">
+					<div class="wrapper">
+						<div class="row mb-5">
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+			        		<div class="icon d-flex align-items-center justify-content-center">
+			        			<span class="fa fa-map-marker"></span>
+			        		</div>
+			        		<div class="text">
+				            <p><span>Address:</span> {{ request["perm_address"] }}</p>
+				          </div>
+			          </div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+			        		<div class="icon d-flex align-items-center justify-content-center">
+			        			<span class="fa fa-phone"></span>
+			        		</div>
+			        		<div class="text">
+				            <p><span>Phone:</span> {{ request["phone"] }}</p>
+				          </div>
+			          </div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+			        		<div class="icon d-flex align-items-center justify-content-center">
+			        			<span class="fa fa-paper-plane"></span>
+			        		</div>
+			        		<div class="text">
+				            <p><span>Email:</span> {{ request["email"] }}</p>
+				          </div>
+			          </div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+			        		<div class="icon d-flex align-items-center justify-content-center">
+			        			<span class="fa fa-globe"></span>
+			        		</div>
+			        		<div class="text">
+				            <p><span>Applied Post</span> {{ request["appliedpost"] }}</p>
+				          </div>
+			          </div>
+							</div>
+						</div>
+						<div class="row no-gutters">
+							<div class="col-md-7">
+								<div class="contact-wrap w-100 p-md-5 p-4">
+									<h3 class="mb-4">Applicant Details</h3>
+									<div id="form-message-warning" class="mb-4"></div> 
+				      		<div id="form-message-success" class="mb-4">
+				            Your message was sent, thank you!
+				      		</div>
+									<form method="POST" id="contactForm" name="contactForm" class="contactForm">
+										<div class="row">
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="name">Application Id</label>
+                                                                                                        <p><strong>{{ request["id"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label" for="name">Full Name</label>
+													<p><strong>{{ request["name"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-6"> 
+												<div class="form-group">
+													<label class="label" for="email">Fathers Name</label>
+													<p><strong>{{ request["fathername"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label" for="name">Gender</label>
+													<p><strong>{{ request["gender"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-6"> 
+												<div class="form-group">
+													<label class="label" for="email">DOB</label>
+													<p><strong>{{ request["DOB"] }}</strong></p>
+												</div>
+											</div>
+											 <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="name">Age</label>
+                                                                                                        <p><strong>{{ request["age"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label" for="name">caste</label>
+													<p><strong>{{ request["caste"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-6"> 
+												<div class="form-group">
+													<label class="label" for="email">Mother Tongue</label>
+													<p><strong>{{ request["motherTongue"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="name">Applied Post Qualification</label>
+                                                                                                        <p><strong>{{ request["passed_class"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="name">Emp Reg. No.</label>
+                                                                                                        <p><strong>{{ request["emp_reg_no"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="email">Emp Reg. Date</label>
+                                                                                                        <p><strong>{{ request["emp_reg_date"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="name">Obtained Marks</label>
+                                                                                                        <p><strong>{{ request["obt_marks"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="email">Total Marks</label>
+                                                                                                        <p><strong>{{ request["tot_marks"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="email">Pass Percentage</label>
+                                                                                                        <p><strong>{{ request["pass_percentage"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="email">Passed Out Year</label>
+                                                                                                        <p><strong>{{ request["year_passed"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+											<div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                        <label class="label" for="email">Disability Percentage</label>
+                                                                                                        <p><strong>{{ request["DisabilityPer"] }}</strong></p>
+                                                                                                </div>
+                                                                                        </div>
+
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="label" for="subject">deformity</label>
+													<p><strong>{{ request["deformity"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="label" for="subject">General Qualification</label>
+													<p><strong>{{ request["general_qualification"] }}</strong></p>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="label" for="subject">Technical Qualification</label>
+													<p><strong>{{ request["technical_qualification"] }}</strong></p>
+												</div>
+											</div>
+											{% endif %}
+											<div class="col-md-12">
+												<div class="form-group">
+													<input type="button" value="Print" onclick="window.print()" class="btn btn-primary">
+													<div class="submitting"></div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="col-md-5 d-flex align-items-stretch">
+								<img  class="info-wrap w-100 p-5 img" src={{request['profile_pic']}} alt="Profile Pic" style="height: 40%;width :50%;"></img>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	</body>
+</html>
+

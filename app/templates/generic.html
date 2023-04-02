@@ -42,8 +42,9 @@
 								{% if error%}
     									<H1><strong>{{error}}</strong></H1>
 								{% endif%}
-								<h2>Differently Abled Special Recruitment Drive 2023-24 SPSR Nellore Dist</h2>
-								<p>Please click on this link for the SPSR Nellore Dist Recruitment Drive 2023-24 notification.</p>
+								<h2>Differently Abled Special Recruitment Drive 2022-23 SPSR Nellore Dist</h2>
+								<p>Please click on this link for the SPSR Nellore Dist Recruitment Drive 2022-23 notification.</p>
+								<a href="https://storage.googleapis.com/nellore-flask/SRD_Notification.pdf">SPSR Recruitment Drive</a></li>
 							</div>
 						</header>
 					</section>
@@ -119,12 +120,12 @@
 										<input type="text" id="caste" name="caste" required/>
 									</div>
 									<div class="field">
-										<label for="casteCert">Upload caste certificate</label>
+										<label for="casteCert">Upload Deformity certificate</label>
 										<input type="file" id="casteCert" name="casteCert" accept="image/png,image/jpeg,application/pdf"/>
 									</div>
 									<div class="field">
 										<label for="profilePic">Upload Profile pic</label>
-										<input type="file" id="profilePic" name="profilePic" accept="image/png,image/jpeg,application/pdf"/>
+										<input type="file" id="profilePic" name="profilePic" accept="image/png,image/jpeg,image/jpg"/>
 									</div>
 									<div class="field">
         									<label>Type of Deformity</label>
@@ -135,11 +136,11 @@
         									<input type="checkbox" name="deformity" value="Orthopedically Handicapped" id="orthopedicallyHandicapped" />
 											<label for="orthopedicallyHandicapped">Orthopedically Handicapped</label>
 											<input type="checkbox" name="deformity" value="Mental Illness" id="MentalIllness" />
-											<label for="MentalIllness">Mental Illness</label>
+											<label for="MentalIllness">Mental Illness/Autism/Intellectual/Muliple/Specific Learning Disability</label>
 									</div>
 									<div class="field">
 										<label for="DisabilityPer">Disability Percentage</label>
-										<input type="number" id="DisabilityPer" name="DisabilityPer" min="1" max="100">
+										<input type="number" id="DisabilityPer" name="DisabilityPer" min="1.00" max="100.00" step="0.01">
 										<style>
 											input[type="number"] {
   												background: transparent;
@@ -152,6 +153,23 @@
 										<input type="text" id="motherTongue" name="Mother_Tongue" required/>
 									</div>
 									<div class="field">
+										<label for="motherTongue">Employment Registration No</label>
+										<input type="text" id="emp_reg_no" name="emp_reg_no" required/>
+									</div>
+									<div class="field">
+										<label for="DOB">Employment Registration Date</label>
+										<input type="date" id="emp_reg_date" name="emp_reg_date" required/>
+										<style>
+											input[type="date"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+											input[type="date"]::-webkit-calendar-picker-indicator {
+  												filter: invert(100%);
+											}
+										</style>
+									</div>
+									<div class="field">
 										<label>Educational Qualifications</label>
 										<label for="general_qualification">a)  General Qualification</label>
 										<input type="text" id="general_qualification" name="general_qualification" required/><br/>
@@ -159,24 +177,61 @@
 										<input type="text" id="technical_qualification" name="technical_qualification" required/>
 									</div>
 									<div class="field">
-										<label>Highest Educational details</label>
+										<label> Requisite Qualification Details</label>
 										<label for="Address_1">Complete address of the Educational institution, Village/Mandal/District</label>
 										<input type="text" id="Address_1" name="Address_1" required/><br/>
-										<label for="Passed_class_1">Passed Class and Date of Examination</label>
+										<label for="Passed_class_1">Applied Post Qaulification</label>
 										<input type="text" id="Passed_class_1" name="Passed_class_1" required/><br/>
-										<label for="Percentage_1">Percentage</label>
-										<input type="number" id="Percentage_1" name="Percentage_1" min="1" max="100" required>
+										<div class="field">
+                                                                                <label for="DOB">Passed Out Year</label>
+                                                                                <input type="date" id="year_passed" name="year_passed" required/>
+										</br>
+										<style>
+                                                                                        input[type="date"] {
+                                                                                                background: transparent;
+                                                                                                color: #ffffff;
+                                                                                        }
+                                                                                        input[type="date"]::-webkit-calendar-picker-indicator {
+                                                                                                filter: invert(100%);
+                                                                                        }
+                                                                                </style>
+										</br>
+                                                                        
+										<label for="Percentage_1">Obtained Marks</label>
+										<input type="number" id="obt_marks" name="obt_marks" required>
+										</br>
 										<style>
 											input[type="number"] {
   												background: transparent;
   												color: #ffffff;
 											}
 										</style>
+										</br>
+										<label for="Percentage_1">Total Marks</label>
+										<input type="number" id="tot_marks" name="tot_marks" required>
+										</br>
+										<style>
+											input[type="number"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+										</style>
+										</br>
+										<label for="Percentage_1">Percentage</label>
+										<input type="number" id="Percentage_1" name="Percentage_1" min="1.00" max="100.00" step="0.01" equired>
+										<style>
+											input[type="number"] {
+  												background: transparent;
+  												color: #ffffff;
+											}
+										</style>
+									</div>
 										<br>
-										<label for="uploadCert">Upload Certificate</label>
+										<label for="uploadCert">Upload Requisite Qulification Certificate</label>
 										<input type="file" id="uploadCert" name="cert_1" accept="image/png, image/jpeg,application/pdf" required/>
 									</div>
 								</div>
+								{{ recaptcha }} </br>
 								<ul class="actions">
 									<li><input type="submit" value="Submit Application"/></li>
 								</ul>
